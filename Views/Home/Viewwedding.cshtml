@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model Wedding
+
+<div class="text-center">
+    <h3 class="display-4">@Model.WedderOne and @Model.WedderTwo's Wedding</h3>
+</div>
+<hr>
+<h4>Date: @Model.WeddingDate</h4>
+
+<div class="column-con">
+    <div class="column">
+        <h4>Guests:</h4>
+        <ul>
+            @foreach(RSVP rsvp in Model.GuestList)
+            {
+                <li>@rsvp.guest.FirstName @rsvp.guest.LastName</li>
+            }
+        </ul>
+    </div>
+
+    <div class="column">
+        <p>Address: @Model.Address</p>
+    </div>
+</div>
+

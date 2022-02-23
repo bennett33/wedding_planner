@@ -1,0 +1,56 @@
+@model List<Wedding> 
+
+<div class="nav-bar">
+    <h1>Welcome To Wedding Planner</h1>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Wedding</th>
+                <th scope="col">Date</th>
+                <th scope="col">Guest</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Wedding wedding in Model)
+            {
+            @* bool existingRVSP = wedding.GuestList
+            .Any(rvsp => rvsp.UserId == Context.Session.GetInt32("UserId")); *@
+
+            bool isHost = wedding.UserId
+            .Equals(Context.Session.GetInt32("UserId"));
+
+            <tr>
+                <td scope="row"><a class="btn btn-link" asp-action="Viewwedding" asp-controller="Home" asp-route-weddingId="@wedding.WeddingId">@wedding.WedderOne and @wedding.WedderTwo</a></td>
+                <td>@wedding.WeddingDate.ToString("MMMM dd yyyy")</td>
+                <td>@wedding.GuestList.Count</td>
+                <td class="d-flex">
+                    <form asp-action="RSVP" asp-controller="Home" asp-route-weddingId="@wedding.WeddingId">
+                        <button class="btn btn-link">
+                            @if (wedding.GuestList.Any(rvsp => rvsp.UserId == Context.Session.GetInt32("UserId")))
+                            {
+                            <span>Un-RSVP</span>
+                            }
+                            else
+                            {
+                            <span>RSVP</span>
+                            }
+                        </button>
+                    </form>
+                    @if (isHost)
+                    {
+                        <form asp-action="DeleteWedding" asp-controller="Home" asp-route-weddingId="@wedding.WeddingId">
+                        <button class="btn btn-link">Delete</button>
+                        </form>
+                    }
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="new-wedding-btn">
+        <a class="btn btn-success" href="/weddings/new">New Wedding</a>
+    </div>
+</div>
